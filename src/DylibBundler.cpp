@@ -64,12 +64,12 @@ void changeLibPathsOnFile(std::string file_to_fix)
 
 bool isRpath(const std::string& path)
 {
-    return path.find("@rpath") == 0 || path.find("@loader_path") == 0;
+    return path.find("@rpath") == 0 or path.find("@loader_path") == 0;
 }
 
 void collectRpaths(const std::string& filename)
 {
-    if (!fileExists(filename))
+    if (not fileExists(filename))
     {
         std::cerr << "\n/!\\ WARNING : can't collect rpaths for nonexistent file '" << filename << "'\n";
         return;
@@ -92,7 +92,7 @@ void collectRpaths(const std::string& filename)
         {
             size_t start_pos = line.find("path ");
             size_t end_pos = line.find(" (");
-            if (start_pos == std::string::npos || end_pos == std::string::npos)
+            if (start_pos == std::string::npos or end_pos == std::string::npos)
             {
                 std::cerr << "\n/!\\ WARNING: Unexpected LC_RPATH format\n";
                 continue;
@@ -148,7 +148,7 @@ std::string searchFilenameInRpaths(const std::string& rpath_file, const std::str
     {
         fullpath = rpath_to_fullpath[rpath_file];
     }
-    else if (!check_path(rpath_file))
+    else if (not check_path(rpath_file))
     {
         for (auto rpath : rpaths_per_file[dependent_file])
         {
@@ -234,10 +234,10 @@ void addDependency(const std::string& path, const std::string& filename)
         if(dep.mergeIfSameAs(deps_in_file[n])) in_deps_per_file = true;
     }
 
-    if(!Settings::isPrefixBundled(dep.getPrefix())) return;
+    if(not Settings::isPrefixBundled(dep.getPrefix())) return;
     
-    if(!in_deps) deps.push_back(dep);
-    if(!in_deps_per_file) deps_per_file[filename].push_back(dep);
+    if(not in_deps) deps.push_back(dep);
+    if(not in_deps_per_file) deps_per_file[filename].push_back(dep);
 }
 
 /*
@@ -262,7 +262,7 @@ void collectDependencies(const std::string& filename, std::vector<std::string>& 
     bool searching = false;
     for(const auto& line : raw_lines) {
         const auto &is_prefix = [&line](const char *const p) { return line.find(p) != std::string::npos; };
-        if (is_prefix("cmd LC_LOAD_DYLIB") || is_prefix("cmd LC_REEXPORT_DYLIB"))
+        if (is_prefix("cmd LC_LOAD_DYLIB") or is_prefix("cmd LC_REEXPORT_DYLIB"))
         {
             if (searching)
             {
@@ -303,7 +303,7 @@ void collectDependencies(const std::string& filename)
 
         // trim useless info, keep only library name
         std::string dep_path = line.substr(1, line.rfind(" (") - 1);
-        if (Settings::isSystemLibrary(dep_path) && !Settings::searchSystemLib()) continue;
+        if (Settings::isSystemLibrary(dep_path) and not Settings::searchSystemLib()) continue;
 
         addDependency(dep_path, filename);
     }
@@ -353,7 +353,7 @@ void createDestDir()
         dest_exists = false;
     }
     
-    if(!dest_exists)
+    if(not dest_exists)
     {
         
         if(Settings::canCreateDir())

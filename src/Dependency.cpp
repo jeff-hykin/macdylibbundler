@@ -45,7 +45,7 @@ std::string stripPrefix(std::string in)
 }
 
 std::string& rtrim(std::string &s) {
-    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char c){ return !std::isspace(c); }).base(), s.end());
+    s.erase(std::find_if(s.rbegin(), s.rend(), [](unsigned char c){ return not std::isspace(c); }).base(), s.end());
     return s;
 }
 
@@ -59,16 +59,16 @@ void initSearchPaths(){
     dyldLibPath = std::getenv("DYLD_FALLBACK_FRAMEWORK_PATH");
     if (dyldLibPath != nullptr)
     {
-        if (!searchPaths.empty() && searchPaths[ searchPaths.size()-1 ] != ':') searchPaths += ":";
+        if (not searchPaths.empty() and searchPaths[ searchPaths.size()-1 ] != ':') searchPaths += ":";
         searchPaths += dyldLibPath;
     }
     dyldLibPath = std::getenv("DYLD_FALLBACK_LIBRARY_PATH");
     if (dyldLibPath != nullptr)
     {
-        if (!searchPaths.empty() && searchPaths[ searchPaths.size()-1 ] != ':') searchPaths += ":";
+        if (not searchPaths.empty() and searchPaths[ searchPaths.size()-1 ] != ':') searchPaths += ":";
         searchPaths += dyldLibPath;
     }
-    if (!searchPaths.empty())
+    if (not searchPaths.empty())
     {
         std::stringstream ss(searchPaths);
         std::string item;
@@ -110,13 +110,13 @@ Dependency::Dependency(std::string path, const std::string& dependent_file)
     filename = stripPrefix(original_file);
     prefix = original_file.substr(0, original_file.rfind("/")+1);
     
-    if( !prefix.empty() && prefix[ prefix.size()-1 ] != '/' ) prefix += "/";
+    if( not prefix.empty() and prefix[ prefix.size()-1 ] != '/' ) prefix += "/";
 
     // check if this dependency is in /usr/lib, /System/Library, or in ignored list
-    if (!Settings::isPrefixBundled(prefix)) return;
+    if (not Settings::isPrefixBundled(prefix)) return;
 
     // check if the lib is in a known location
-    if( prefix.empty() || !fileExists( prefix+filename ) )
+    if( prefix.empty() or not fileExists( prefix+filename ) )
     {
         //the paths contains at least /usr/lib so if it is empty we have not initialized it
         int searchPathAmount = Settings::searchPathAmount();
@@ -141,8 +141,8 @@ Dependency::Dependency(std::string path, const std::string& dependent_file)
     }
     
     //If the location is still unknown, ask the user for search path
-    if( !Settings::isPrefixIgnored(prefix)
-        && ( prefix.empty() || !fileExists( prefix+filename ) ) )
+    if( not Settings::isPrefixIgnored(prefix)
+        and ( prefix.empty() or not fileExists( prefix+filename ) ) )
     {
         std::cerr << "\n/!\\ WARNING : Library " << filename << " has an incomplete name (location unknown)" << std::endl;
         missing_prefixes = true;

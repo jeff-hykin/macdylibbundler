@@ -53,7 +53,7 @@ void tokenize(const string& str, const char* delim, vector<string>* vectorarg)
     // find first "non-delimiter".
     string::size_type pos = str.find_first_of(delimiters, lastPos);
     
-    while (string::npos != pos || string::npos != lastPos)
+    while (string::npos != pos or string::npos != lastPos)
     {
         // found a token, add it to the vector.
         tokens.push_back(str.substr(lastPos, pos - lastPos));
@@ -96,7 +96,7 @@ bool fileExists(const std::string& filename)
 void copyFile(const string& from, const string& to)
 {
     bool override = Settings::canOverwriteFiles();
-    if( from != to && !override )
+    if( from != to and not override )
     {
         if(fileExists( to ))
         {
@@ -109,7 +109,7 @@ void copyFile(const string& from, const string& to)
         
     // copy file to local directory
     string command = string("cp ") + override_permission + string("\"") + from + string("\" \"") + to + string("\"");
-    if( from != to && systemp( command ) != 0 )
+    if( from != to and systemp( command ) != 0 )
     {
         cerr << "\n\nError : An error occured while trying to copy file " << from << " to " << to << endl;
         exit(1);
@@ -183,7 +183,7 @@ std::string getUserInputDirForFile(const std::string& filename)
     for(int n=0; n<searchPathAmount; n++)
     {
         auto searchPath = Settings::searchPath(n);
-        if( !searchPath.empty() && searchPath[ searchPath.size()-1 ] != '/' ) searchPath += "/";
+        if( not searchPath.empty() and searchPath[ searchPath.size()-1 ] != '/' ) searchPath += "/";
 
         if( fileExists( searchPath+filename ) )
         {
@@ -202,9 +202,9 @@ std::string getUserInputDirForFile(const std::string& filename)
 
         if(prefix.compare("quit")==0) exit(1);
 
-        if( !prefix.empty() && prefix[ prefix.size()-1 ] != '/' ) prefix += "/";
+        if( not prefix.empty() and prefix[ prefix.size()-1 ] != '/' ) prefix += "/";
 
-        if( !fileExists( prefix+filename ) )
+        if( not fileExists( prefix+filename ) )
         {
             std::cerr << (prefix+filename) << " does not exist. Try again" << std::endl;
             continue;

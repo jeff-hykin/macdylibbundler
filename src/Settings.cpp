@@ -106,7 +106,7 @@ bool isPrefixBundled(const std::string& prefix)
 {
     if(prefix.find(".framework") != std::string::npos) return false;
     if(prefix.find("@executable_path") != std::string::npos) return false;
-    if(isSystemLibrary(prefix) && !searchSystemLib()) return false;
+    if(isSystemLibrary(prefix) and not searchSystemLib()) return false;
     if(isPrefixIgnored(prefix)) return false;
     
     return true;

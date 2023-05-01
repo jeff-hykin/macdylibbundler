@@ -6,7 +6,7 @@
 - (defaultWarehouse):
     saveAs: "defaultWarehouse"
     createWarehouseFrom:
-        tarFileUrl: "https://github.com/NixOS/nixpkgs/archive/ce6aa13369b667ac2542593170993504932eb836.tar.gz"
+        tarFileUrl: "https://github.com/NixOS/nixpkgs/archive/f1b9cc23aa8b1549dd7cb53dbe9fc950efc97646.tar.gz"
     arguments:
         config:
             allowUnfree: true
@@ -78,10 +78,14 @@
 #     var: HOWDY
 #     overwriteAs: "Howdy"
 
-- (environmentVariable): # impure, but often necessary/practical and minimal
-    var: PATH
-    append: "/usr/bin"
-    joinUsing: ":"
+# - (environmentVariable): # impure, but often necessary/practical and minimal
+#     var: PATH
+#     append: "/usr/bin"
+#     joinUsing: ":"
+
+- (package):
+    asBuildInput: true
+    load: [ "gcc",]
 
 # 
 # 
@@ -98,7 +102,7 @@
 - (package):
     asBuildInput: true
     load: [ "deno",]
-    from: "ce6aa13369b667ac2542593170993504932eb836" # a commit-hash of https://github.com/NixOS/nixpkgs, e.g. https://github.com/NixOS/nixpkgs/archive/ce6aa13369b667ac2542593170993504932eb836.tar.gz
+    from: "f1b9cc23aa8b1549dd7cb53dbe9fc950efc97646" # a commit-hash of https://github.com/NixOS/nixpkgs, e.g. https://github.com/NixOS/nixpkgs/archive/f1b9cc23aa8b1549dd7cb53dbe9fc950efc97646.tar.gz
 
 - (package):
     asBuildInput: true
